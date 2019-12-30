@@ -27,7 +27,7 @@ impl SteamFolders {
     }
     pub fn find_file_in_steam_paths(self, file_path: String) -> Result<String, io::Error> {
         let mut vec_index: i32 = 0;
-        let mut file_string: String = "oof".to_string();
+        let mut file_string: String = "".to_string();
 
         for i in self.steam_folder_paths.clone() {
             if Path::new(&(i.to_owned() + &file_path)).exists() {

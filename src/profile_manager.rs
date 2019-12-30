@@ -74,12 +74,12 @@ impl Profiles {
     }
 
     pub fn save_json(&self) {
-        let mut file_write = File::create("/Users/nathanielbuck/sens/profiles.json").unwrap();
+        let homepath: String = env::home_dir().unwrap().display().to_string();
+        let mut file_write = File::create(homepath + "/sens/profiles.json").unwrap();
         file_write.write(serde_json::to_string(&self).unwrap().as_bytes()).unwrap();
     }
     pub fn load_json() -> Self {
         let homepath: String = env::home_dir().unwrap().display().to_string();
-        println!("{:?}", homepath.clone() + "/sens/profiles.json");
         let file = File::open(homepath + "/sens/profiles.json");
         let mut contents = String::new();
         file.unwrap().read_to_string(&mut contents).unwrap();
