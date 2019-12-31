@@ -18,13 +18,12 @@ mod tests {
         x.add_profile();
         x.remove_profile(1);
         x.set_platform();
-        x.add_steam_folder("/tmp".to_string());
-        x.add_steam_folder("/tmp".to_string());
+        x.add_steam_folder("/".to_string());
+        x.add_steam_folder("/".to_string());
         x.remove_steam_folder_at_index(0);
         println!("Steam Folder: {:?}", x.get_steam_folder_at_pointer(0));
         x.set_paths();
         x.equalize_profile_at_index(SupportedGames::CSGO, 0);
-        x.switch_profile(0);
         x.fs_save_profiles();
         let y = Profiles::fs_load_profiles();
         x = Profiles::from_json_string(x.to_json_string());
