@@ -32,10 +32,8 @@ impl Profiles {
         ) {
         self.profiles[profile_index as usize].set_game_sens(game, sens);
     }
-    pub fn equalize_profile_at_index(&mut self, game: SupportedGames) {
-        for i in 0..self.profiles.len() {
-            self.profiles[i].equalize(game);
-        }
+    pub fn equalize_profile_at_index(&mut self, game: SupportedGames, index: i32) {
+            self.profiles[index as usize].equalize(game);
     }
     pub fn set_platform(&mut self) {
         self.platform = Platform::new();
@@ -69,17 +67,23 @@ impl Profiles {
     pub fn fs_read_game_sens_at_index(&mut self, game: SupportedGames, index: i32) {
         self.profiles[index as usize].fs_read_game_sens(game);
     }
-    pub fn fs_read_all_game_sens_at_index(mut self, index: i32) {
+    pub fn fs_read_all_game_sens_at_index(&mut self, index: i32) {
         self.profiles[index as usize].fs_read_all_game_sens();
     }
 
-    pub fn save_json(&self) {
-        let mut file_write = File::create("/Users/nathanielbuck/sens/profiles.json").unwrap();
+    pub fn to_json_string(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
+    pub fn from_json_string(contents: String) -> Self {
+        serde_json::from_str(&contents).unwrap()
+    }
+    pub fn fs_save_profiles(&self) {
+        let homepath: String = env::home_dir().unwrap().display().to_string();
+        let mut file_write = File::create(homepath + "/sens/profiles.json").unwrap();
         file_write.write(serde_json::to_string(&self).unwrap().as_bytes()).unwrap();
     }
-    pub fn load_json() -> Self {
+    pub fn fs_load_profiles() -> Self {
         let homepath: String = env::home_dir().unwrap().display().to_string();
-        println!("{:?}", homepath.clone() + "/sens/profiles.json");
         let file = File::open(homepath + "/sens/profiles.json");
         let mut contents = String::new();
         file.unwrap().read_to_string(&mut contents).unwrap();
