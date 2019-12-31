@@ -12,6 +12,7 @@ mod tests {
 
     #[test]
     fn prof_man() {
+        Profiles::check_config_dir();
         let mut x = Profiles::new();
         x.add_profile();
         x.add_profile();

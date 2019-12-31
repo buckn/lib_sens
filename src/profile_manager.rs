@@ -4,6 +4,8 @@ use crate::profile::SensProfile;
 use crate::steam_folder::SteamFolders;
 use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
+use std::path::Path;
+use std::fs;
 use std::fs::File;
 use std::env;
 
@@ -88,5 +90,12 @@ impl Profiles {
         let mut contents = String::new();
         file.unwrap().read_to_string(&mut contents).unwrap();
         serde_json::from_str(&contents).unwrap()
+    }
+    pub fn check_config_dir() {
+        let homepath: String = env::home_dir().unwrap().display().to_string();
+        if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
+            fs::create_dir(homepath.clone() + "/sens").unwrap();
+            File::create(homepath + "/sens/profiles.json").unwrap().write_all(b"Hello, world!").unwrap();
+        }
     }
 }
