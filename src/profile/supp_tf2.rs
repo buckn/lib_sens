@@ -7,12 +7,12 @@ use std::fs::File;
 use std::io::{Read, Write};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct CSGO {
+pub struct TF2 {
     sens: f64,
     path: String,
 }
 
-impl Game for CSGO {
+impl Game for TF2 {
     fn new() -> Self {
         Self {
             sens: 1.0,
@@ -34,7 +34,6 @@ impl Game for CSGO {
         value
     }
     fn fs_read(&self) -> f64 {
-        println!("{:?}", self.path);
         let mut return_val: f64 = 0.0;
         let file = File::open(&self.path);
         let mut contents = String::new();
@@ -95,6 +94,6 @@ impl Game for CSGO {
         return_path
     }
     fn set_path(&mut self, steam_paths: SteamFolders, _platform_value: Platform) {
-        self.path = steam_paths.find_file_in_steam_paths_with_id("/730/remote/cfg/config.cfg".to_string()).unwrap();
+        self.path = steam_paths.find_file_in_steam_paths_with_id("/440/remote/cfg/config.cfg".to_string()).unwrap();
     }
 }

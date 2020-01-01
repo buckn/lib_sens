@@ -73,29 +73,28 @@ impl Profiles {
         self.profiles[index as usize].fs_read_all_game_sens();
     }
 
-    pub fn to_json_string(&self) -> String {
-        serde_json::to_string(&self).unwrap()
-    }
-    pub fn from_json_string(contents: String) -> Self {
-        serde_json::from_str(&contents).unwrap()
-    }
-    pub fn fs_save_profiles(&self) {
+    pub fn save_json(&self) {
         let homepath: String = env::home_dir().unwrap().display().to_string();
+        
+        if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
+            fs::create_dir(homepath.clone() + "/sens").unwrap();
+            File::create(homepath.clone() + "/sens/profiles.json").unwrap().write_all(b"").unwrap();
+        }
+
         let mut file_write = File::create(homepath + "/sens/profiles.json").unwrap();
         file_write.write(serde_json::to_string(&self).unwrap().as_bytes()).unwrap();
     }
     pub fn fs_load_profiles() -> Self {
         let homepath: String = env::home_dir().unwrap().display().to_string();
+        
+        if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
+            fs::create_dir(homepath.clone() + "/sens").unwrap();
+            File::create(homepath.clone() + "/sens/profiles.json").unwrap().write_all(b"").unwrap();
+        }
+
         let file = File::open(homepath + "/sens/profiles.json");
         let mut contents = String::new();
         file.unwrap().read_to_string(&mut contents).unwrap();
         serde_json::from_str(&contents).unwrap()
-    }
-    pub fn check_config_dir() {
-        let homepath: String = env::home_dir().unwrap().display().to_string();
-        if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
-            fs::create_dir(homepath.clone() + "/sens").unwrap();
-            File::create(homepath + "/sens/profiles.json").unwrap().write_all(b"Hello, world!").unwrap();
-        }
     }
 }
