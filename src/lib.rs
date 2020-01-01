@@ -16,16 +16,10 @@ mod tests {
         let mut x = Profiles::new();
         x.add_profile();
         x.set_platform();
-        println!("pre steam folder");
-        x.add_steam_folder("/home/nathan/.steam/steam/".to_string());
+        x.add_steam_folder("/home/test/.steam/steam/".to_string());
         x.set_paths();
-        println!("pre read");
-        x.fs_read_game_sens_at_index(SupportedGames::CSGO, 0);
-        x.equalize_profile_at_index(SupportedGames::CSGO);
-        x.switch_profile(0);
-        println!("pre save json");
+        x.equalize_profile_at_index(SupportedGames::CSGO, 0);
         x.save_json();
-        println!("{:?}", Profiles::load_json());
     }
     #[test]
     fn steam_folder_test() {
