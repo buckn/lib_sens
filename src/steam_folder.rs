@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::io;
+use std::fs;
 use std::path::Path;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -35,6 +36,28 @@ impl SteamFolders {
             }
             vec_index = vec_index + 1;
         }
+        Ok(file_string)
+    }
+    pub fn find_file_in_steam_paths_with_id(self, config_path: String) -> Result<String, io::Error> {
+        let mut vec_index: i32 = 0;
+        let mut file_string: String = "".to_string();
+
+        for i in self.steam_folder_paths.clone() {
+            println!("steam user data path {:?}", &(i.clone() + "userdata/"));
+            if Path::new(&(i.clone() + "userdata/")).exists() {
+                let paths = fs::read_dir(i.clone() + "userdata/").unwrap();
+                for path in paths {
+                    let current_path_with_id = path.unwrap().path().display().to_string() + &config_path;
+                    print!("config path? {:?}", current_path_with_id);
+                    if Path::new(&current_path_with_id).exists() {
+                        println!("      does exist");
+                        file_string = current_path_with_id.to_string();
+                    }
+                }
+            }
+            vec_index = vec_index + 1;
+        }
+
         Ok(file_string)
     }
 }

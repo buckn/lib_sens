@@ -1,5 +1,6 @@
-pub mod supp_csgo;
+mod supp_csgo;
 mod supp_portal2;
+mod supp_tf2;
 
 use crate::game_trait::Game;
 use crate::games_enum::SupportedGames;

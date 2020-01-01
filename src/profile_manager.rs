@@ -4,6 +4,8 @@ use crate::profile::SensProfile;
 use crate::steam_folder::SteamFolders;
 use serde::{Deserialize, Serialize};
 use std::io::{Read, Write};
+use std::path::Path;
+use std::fs;
 use std::fs::File;
 use std::env;
 
@@ -75,11 +77,23 @@ impl Profiles {
 
     pub fn save_json(&self) {
         let homepath: String = env::home_dir().unwrap().display().to_string();
+        
+        if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
+            fs::create_dir(homepath.clone() + "/sens").unwrap();
+            File::create(homepath.clone() + "/sens/profiles.json").unwrap().write_all(b"").unwrap();
+        }
+
         let mut file_write = File::create(homepath + "/sens/profiles.json").unwrap();
         file_write.write(serde_json::to_string(&self).unwrap().as_bytes()).unwrap();
     }
     pub fn load_json() -> Self {
         let homepath: String = env::home_dir().unwrap().display().to_string();
+        
+        if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
+            fs::create_dir(homepath.clone() + "/sens").unwrap();
+            File::create(homepath.clone() + "/sens/profiles.json").unwrap().write_all(b"").unwrap();
+        }
+
         let file = File::open(homepath + "/sens/profiles.json");
         let mut contents = String::new();
         file.unwrap().read_to_string(&mut contents).unwrap();

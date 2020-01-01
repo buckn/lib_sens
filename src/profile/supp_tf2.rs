@@ -94,8 +94,6 @@ impl Game for TF2 {
         return_path
     }
     fn set_path(&mut self, steam_paths: SteamFolders, _platform_value: Platform) {
-        self.path = steam_paths
-            .find_file_in_steam_paths("userdata/310883639/620/remote/cfg/config.cfg".to_string()) //TODO make this work for TF2
-            .unwrap();
+        self.path = steam_paths.find_file_in_steam_paths_with_id("/440/remote/cfg/config.cfg".to_string()).unwrap();
     }
 }
