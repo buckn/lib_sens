@@ -2,7 +2,7 @@ mod game_trait;
 mod games_enum;
 mod platform;
 mod profile;
-mod profile_manager;
+pub mod profile_manager;
 mod steam_folder;
 
 #[cfg(test)]
