@@ -24,7 +24,6 @@ mod tests {
     #[test]
     fn steam_folder_test() {
         let x = SteamFolders::new();
-
     }
 
 }

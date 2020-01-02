@@ -32,33 +32,54 @@ impl SensProfile {
         let csgo_sens: f64;
 
         match game {
-            SupportedGames::CSGO => csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.0.get_sens()),
-            SupportedGames::PORTAL2 => csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.1.get_sens()),
-            SupportedGames::TF2 => csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.2.get_sens()),
+            SupportedGames::CSGO => {
+                csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.0.get_sens())
+            }
+            SupportedGames::PORTAL2 => {
+                csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.1.get_sens())
+            }
+            SupportedGames::TF2 => {
+                csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.2.get_sens())
+            }
         }
 
-        self.game_structs_tuple.0.set_sens(CSGO::convert_from_csgo(
-            csgo_sens,
-        ));
-        self.game_structs_tuple.1.set_sens(PORTAL2::convert_from_csgo(
-            csgo_sens,
-        ));
-        self.game_structs_tuple.2.set_sens(TF2::convert_from_csgo(
-            csgo_sens,
-        ));
+        self.game_structs_tuple
+            .0
+            .set_sens(CSGO::convert_from_csgo(csgo_sens));
+        self.game_structs_tuple
+            .1
+            .set_sens(PORTAL2::convert_from_csgo(csgo_sens));
+        self.game_structs_tuple
+            .2
+            .set_sens(TF2::convert_from_csgo(csgo_sens));
     }
 
     pub fn fs_read_all_game_sens(&mut self) {
-            self.game_structs_tuple.0.set_sens(self.game_structs_tuple.0.fs_read());
-            self.game_structs_tuple.1.set_sens(self.game_structs_tuple.1.fs_read());
-            self.game_structs_tuple.2.set_sens(self.game_structs_tuple.2.fs_read());
+        self.game_structs_tuple
+            .0
+            .set_sens(self.game_structs_tuple.0.fs_read());
+        self.game_structs_tuple
+            .1
+            .set_sens(self.game_structs_tuple.1.fs_read());
+        self.game_structs_tuple
+            .2
+            .set_sens(self.game_structs_tuple.2.fs_read());
     }
 
     pub fn fs_read_game_sens(&mut self, game: SupportedGames) {
         match game {
-            SupportedGames::CSGO => self.game_structs_tuple.0.set_sens(self.game_structs_tuple.0.fs_read()),
-            SupportedGames::PORTAL2 => self.game_structs_tuple.1.set_sens(self.game_structs_tuple.1.fs_read()),
-            SupportedGames::TF2 => self.game_structs_tuple.2.set_sens(self.game_structs_tuple.2.fs_read()),
+            SupportedGames::CSGO => self
+                .game_structs_tuple
+                .0
+                .set_sens(self.game_structs_tuple.0.fs_read()),
+            SupportedGames::PORTAL2 => self
+                .game_structs_tuple
+                .1
+                .set_sens(self.game_structs_tuple.1.fs_read()),
+            SupportedGames::TF2 => self
+                .game_structs_tuple
+                .2
+                .set_sens(self.game_structs_tuple.2.fs_read()),
         }
     }
 
