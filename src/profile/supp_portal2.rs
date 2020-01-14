@@ -94,6 +94,8 @@ impl Game for PORTAL2 {
         return_path
     }
     fn set_path(&mut self, steam_paths: SteamFolders, _platform_value: Platform) {
-        self.path = steam_paths.find_file_in_steam_paths_with_id("/620/remote/cfg/config.cfg".to_string()).unwrap();
+        self.path = steam_paths
+            .find_file_in_steam_paths_with_id("/620/remote/cfg/config.cfg".to_string())
+            .unwrap();
     }
 }

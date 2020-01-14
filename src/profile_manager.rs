@@ -3,12 +3,11 @@ use crate::platform::Platform;
 use crate::profile::SensProfile;
 use crate::steam_folder::SteamFolders;
 use serde::{Deserialize, Serialize};
-use std::io::{Read, Write};
-use std::path::Path;
+use std::env;
 use std::fs;
 use std::fs::File;
-use std::env;
-
+use std::io::{Read, Write};
+use std::path::Path;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Profiles {
@@ -31,7 +30,7 @@ impl Profiles {
         game: SupportedGames,
         sens: f64,
         profile_index: i32,
-        ) {
+    ) {
         self.profiles[profile_index as usize].set_game_sens(game, sens);
     }
     pub fn equalize_profile_at_index(&mut self, game: SupportedGames) {
@@ -77,21 +76,29 @@ impl Profiles {
 
     pub fn save_json(&self) {
         let homepath: String = env::home_dir().unwrap().display().to_string();
-        
+
         if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
             fs::create_dir(homepath.clone() + "/sens").unwrap();
-            File::create(homepath.clone() + "/sens/profiles.json").unwrap().write_all(b"").unwrap();
+            File::create(homepath.clone() + "/sens/profiles.json")
+                .unwrap()
+                .write_all(b"")
+                .unwrap();
         }
 
         let mut file_write = File::create(homepath + "/sens/profiles.json").unwrap();
-        file_write.write(serde_json::to_string(&self).unwrap().as_bytes()).unwrap();
+        file_write
+            .write(serde_json::to_string(&self).unwrap().as_bytes())
+            .unwrap();
     }
     pub fn load_json() -> Self {
         let homepath: String = env::home_dir().unwrap().display().to_string();
-        
+
         if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
             fs::create_dir(homepath.clone() + "/sens").unwrap();
-            File::create(homepath.clone() + "/sens/profiles.json").unwrap().write_all(b"").unwrap();
+            File::create(homepath.clone() + "/sens/profiles.json")
+                .unwrap()
+                .write_all(b"")
+                .unwrap();
         }
 
         let file = File::open(homepath + "/sens/profiles.json");
