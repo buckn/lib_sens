@@ -33,10 +33,8 @@ impl Profiles {
     ) {
         self.profiles[profile_index as usize].set_game_sens(game, sens);
     }
-    pub fn equalize_profile_at_index(&mut self, game: SupportedGames) {
-        for i in 0..self.profiles.len() {
-            self.profiles[i].equalize(game);
-        }
+    pub fn equalize_profile_at_index(&mut self, game: SupportedGames, index: i32) {
+        self.profiles[index as usize].equalize(game);
     }
     pub fn set_platform(&mut self) {
         self.platform = Platform::new();
@@ -70,7 +68,7 @@ impl Profiles {
     pub fn fs_read_game_sens_at_index(&mut self, game: SupportedGames, index: i32) {
         self.profiles[index as usize].fs_read_game_sens(game);
     }
-    pub fn fs_read_all_game_sens_at_index(mut self, index: i32) {
+    pub fn fs_read_all_game_sens_at_index(&mut self, index: i32) {
         self.profiles[index as usize].fs_read_all_game_sens();
     }
 
@@ -90,7 +88,7 @@ impl Profiles {
             .write(serde_json::to_string(&self).unwrap().as_bytes())
             .unwrap();
     }
-    pub fn load_json() -> Self {
+    pub fn fs_load_profiles() -> Self {
         let homepath: String = env::home_dir().unwrap().display().to_string();
 
         if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {

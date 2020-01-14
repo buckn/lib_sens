@@ -34,7 +34,7 @@ impl Game for CSGO {
         value
     }
     fn fs_read(&self) -> f64 {
-        println!("{:?}", self.path);
+        println!("path {:?}", self.path);
         let mut return_val: f64 = 0.0;
         let file = File::open(&self.path);
         let mut contents = String::new();

@@ -1,10 +1,11 @@
 [package]
 name = "lib_sens"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["buckn <nathanieljbuck7@gmail.com>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+description = "A Rust crate that converts sensitivities between video games and synchronizes them to configuration files."
+repository = "https://github.com/buckn/lib_sens"
+license = "Apache-2.0"
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
