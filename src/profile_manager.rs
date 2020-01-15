@@ -114,7 +114,8 @@ impl Profiles {
         } else {
             fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
         }
-        File::create(homepath + "/sens/profiles.json")?.write(serde_json::to_string(&self).unwrap().as_bytes())?;
+        File::create(homepath + "/sens/profiles.json")?
+            .write(serde_json::to_string(&self).unwrap().as_bytes())?;
         Ok(())
     }
     ///This retrieves the sensitivity profiles from storage so that they can be used
