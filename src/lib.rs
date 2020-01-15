@@ -15,21 +15,48 @@ mod steam_folder;
 mod tests {
     use crate::games_enum::SupportedGames;
     use crate::profile_manager::Profiles;
-    use crate::steam_folder::SteamFolders;
 
     #[test]
-    fn prof_man_test() {
+    fn profiles_new() {
+        let x = Profiles::new();
+    }
+    #[test]
+    fn manipulate_profiles() {
         let mut x = Profiles::new();
         x.add_profile();
         x.set_platform();
         x.add_steam_folder("/home/test/.steam/steam/".to_string());
-        x.set_paths();
-        x.equalize_profile_at_index(SupportedGames::CSGO, 0);
-        x.save_json();
     }
     #[test]
-    fn steam_folder_test() {
-        let x = SteamFolders::new();
+    fn set_paths() {
+        let mut x = Profiles::new();
+        x.add_profile();
+        x.set_platform();
+        x.add_steam_folder("/home/test/.steam/steam/".to_string());
+        x.set_paths().unwrap();
+    }
+    #[test]
+    fn equalize() {
+        let mut x = Profiles::new();
+        x.add_profile();
+        x.set_platform();
+        x.add_steam_folder("/home/test/.steam/steam/".to_string());
+        x.set_paths().unwrap();
+        x.equalize_profile_at_index(SupportedGames::CSGO, 0);
+    }
+    #[test]
+    fn save_as_json() {
+        let mut x = Profiles::new();
+        x.add_profile();
+        x.set_platform();
+        x.add_steam_folder("/home/test/.steam/steam/".to_string());
+        x.set_paths().unwrap();
+        x.equalize_profile_at_index(SupportedGames::CSGO, 0);
+        x.save_json().unwrap();
+    }
+    #[test]
+    fn retrieve_json() {
+        let x = Profiles::fs_load_profiles().unwrap();
     }
 
 }

@@ -1,5 +1,6 @@
 use crate::platform::Platform;
 use crate::steam_folder::SteamFolders;
+use std::io;
 
 pub trait Game {
     //default constructor
@@ -14,10 +15,14 @@ pub trait Game {
     fn convert_from_csgo(value: f64) -> f64;
 
     //write to the game's config file in the fs and read the
-    fn fs_read(&self) -> f64;
-    fn fs_write(self);
+    fn fs_read(&self) -> Result<f64, io::Error>;
+    fn fs_write(self) -> Result<(), io::Error>;
 
     //deal with the file path of the game config file
     fn get_path(&self) -> String;
-    fn set_path(&mut self, steam_path: SteamFolders, platform_value: Platform);
+    fn set_path(
+        &mut self,
+        steam_path: SteamFolders,
+        platform_value: Platform,
+    ) -> Result<(), io::Error>;
 }

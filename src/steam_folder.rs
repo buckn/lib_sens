@@ -46,15 +46,12 @@ impl SteamFolders {
         let mut file_string: String = "".to_string();
 
         for i in self.steam_folder_paths.clone() {
-            println!("steam user data path {:?}", &(i.clone() + "userdata/"));
             if Path::new(&(i.clone() + "userdata/")).exists() {
                 let paths = fs::read_dir(i.clone() + "userdata/").unwrap();
                 for path in paths {
                     let current_path_with_id =
                         path.unwrap().path().display().to_string() + &config_path;
-                    print!("config path? {:?}", current_path_with_id);
                     if Path::new(&current_path_with_id).exists() {
-                        println!("      does exist");
                         file_string = current_path_with_id.to_string();
                     }
                 }

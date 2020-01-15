@@ -4,6 +4,7 @@ use crate::steam_folder::SteamFolders;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
+use std::io;
 use std::io::{Read, Write};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -33,11 +34,11 @@ impl Game for PORTAL2 {
     fn convert_from_csgo(value: f64) -> f64 {
         value
     }
-    fn fs_read(&self) -> f64 {
+    fn fs_read(&self) -> Result<f64, io::Error> {
         let mut return_val: f64 = 0.0;
-        let file = File::open(&self.path);
+        let mut file = File::open(&self.path)?;
         let mut contents = String::new();
-        file.unwrap().read_to_string(&mut contents).unwrap();
+        file.read_to_string(&mut contents)?;
 
         let key_to_find = "sensitivity";
 
@@ -57,14 +58,14 @@ impl Game for PORTAL2 {
                 return_val = value.parse::<f64>().unwrap();
             }
         }
-        return_val
+        Ok(return_val)
     }
-    fn fs_write(self) {
+    fn fs_write(self) -> Result<(), io::Error> {
         let mut y = "".to_string();
 
-        let file = File::open(self.path.clone());
+        let mut file = File::open(self.path.clone())?;
         let mut contents = String::new();
-        file.unwrap().read_to_string(&mut contents).unwrap();
+        file.read_to_string(&mut contents)?;
 
         let replaced = contents
             .replace("\n", "\n(*)")
@@ -86,16 +87,21 @@ impl Game for PORTAL2 {
             y += item;
         }
 
-        let mut file_write = File::create(self.path).unwrap();
-        file_write.write(y.as_bytes()).unwrap();
+        let mut file_write = File::create(self.path)?;
+        file_write.write(y.as_bytes())?;
+        Ok(())
     }
     fn get_path(&self) -> String {
         let return_path = String::from(&self.path);
         return_path
     }
-    fn set_path(&mut self, steam_paths: SteamFolders, _platform_value: Platform) {
+    fn set_path(
+        &mut self,
+        steam_paths: SteamFolders,
+        _platform_value: Platform,
+    ) -> Result<(), io::Error> {
         self.path = steam_paths
-            .find_file_in_steam_paths_with_id("/620/remote/cfg/config.cfg".to_string())
-            .unwrap();
+            .find_file_in_steam_paths_with_id("/620/remote/cfg/config.cfg".to_string())?;
+        Ok(())
     }
 }
