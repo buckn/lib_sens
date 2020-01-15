@@ -108,7 +108,8 @@ impl Profiles {
             File::create(homepath.clone() + "/sens/profiles.json")?.write_all(b"")?;
         }
 
-        let mut file_write = File::create(homepath + "/sens/profiles.json").unwrap();
+        fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
+        let mut file_write = File::create(homepath + "/sens/profiles.json")?;
         file_write.write(serde_json::to_string(&self).unwrap().as_bytes())?;
         Ok(())
     }
