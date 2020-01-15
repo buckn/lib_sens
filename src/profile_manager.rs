@@ -102,7 +102,6 @@ impl Profiles {
     ///This saves the vector of profiles to json so that the profiles can be retrieved from storage later.
     pub fn save_json(&self) -> Result<(), io::Error> {
         let homepath: String = dirs::config_dir().unwrap().to_str().unwrap().to_string();
-        fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
 
         if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
             if !(Path::new(&(homepath.clone())).exists()) {
@@ -112,6 +111,8 @@ impl Profiles {
                 fs::create_dir(homepath.clone() + "/sens").unwrap();
             }
             File::create(homepath.clone() + "/sens/profiles.json")?.write_all(b"")?;
+        } else {
+            fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
         }
         File::create(homepath + "/sens/profiles.json")?.write(serde_json::to_string(&self).unwrap().as_bytes())?;
         Ok(())
