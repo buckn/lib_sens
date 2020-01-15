@@ -99,18 +99,18 @@ impl Profiles {
         self.profiles[index as usize].fs_read_all_game_sens()?;
         Ok(())
     }
-    ///This saves the profiles to json so that the profiles can be retrieved from storage later.
+    ///This saves the vector of profiles to json so that the profiles can be retrieved from storage later.
     pub fn save_json(&self) -> Result<(), io::Error> {
         let homepath: String = dirs::config_dir().unwrap().to_str().unwrap().to_string();
+        fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
 
         if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
-            fs::create_dir(homepath.clone() + "/sens").unwrap();
+            if !(Path::new(&(homepath.clone() + "/sens")).exists()) {
+                fs::create_dir(homepath.clone() + "/sens").unwrap();
+            }
             File::create(homepath.clone() + "/sens/profiles.json")?.write_all(b"")?;
         }
-
-        fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
-        let mut file_write = File::create(homepath + "/sens/profiles.json")?;
-        file_write.write(serde_json::to_string(&self).unwrap().as_bytes())?;
+        File::create(homepath + "/sens/profiles.json")?.write(serde_json::to_string(&self).unwrap().as_bytes())?;
         Ok(())
     }
     ///This retrieves the sensitivity profiles from storage so that they can be used
