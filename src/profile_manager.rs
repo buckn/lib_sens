@@ -105,6 +105,9 @@ impl Profiles {
         fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
 
         if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
+            if !(Path::new(&(homepath.clone())).exists()) {
+                fs::create_dir(homepath.clone()).unwrap();
+            }
             if !(Path::new(&(homepath.clone() + "/sens")).exists()) {
                 fs::create_dir(homepath.clone() + "/sens").unwrap();
             }
