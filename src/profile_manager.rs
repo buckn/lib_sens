@@ -118,10 +118,6 @@ impl Profiles {
         let homepath: String = dirs::config_dir().unwrap().to_str().unwrap().to_string();
 
         if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
-            if !(Path::new(&(homepath.clone() + "/sens")).exists()) {
-                fs::create_dir(homepath.clone() + "/sens").unwrap();
-            }
-            File::create(homepath.clone() + "/sens/profiles.json")?.write_all(b"")?;
             return Ok(Self::new());
         }
 
