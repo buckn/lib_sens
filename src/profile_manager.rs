@@ -65,8 +65,8 @@ impl Profiles {
         Ok(())
     }
     ///This gets a specific steam folder from the vector of steam folders.
-    pub fn get_steam_folder_at_pointer(&self, index: usize) -> String {
-        self.steam_paths.get_steam_folder_at_pointer(index)
+    pub fn get_steam_folder_at_index(&self, index: i32) -> String {
+        self.steam_paths.get_steam_folder_at_pointer(index as usize)
     }
     ///This appends a steam folder to the vector of steam folders.
     pub fn add_steam_folder(&mut self, path_string: String) {
@@ -131,5 +131,27 @@ impl Profiles {
         file.unwrap().read_to_string(&mut contents)?;
         let tmp = serde_json::from_str(&contents).unwrap();
         Ok(tmp)
+    }
+
+    ///This makes a string that lists the profiles and steam folders in the Profiles struct
+    pub fn to_string(self) -> String {
+        let mut return_string: String = "Profiles: \n".to_string();
+
+        for i in 0..self.profiles.len() {
+            return_string = return_string + "    " + &i.to_string() + ".  " + &self.clone().profiles[i].get_name() + "\n";
+        }
+
+        return_string = return_string + "Steam Folders: \n";
+
+        for i in 0..self.steam_paths.len() {
+            return_string = return_string + "    " + &i.to_string() + ".  " + &self.steam_paths.get_steam_folder_at_pointer(i as usize) + "\n";
+        }
+
+        return_string
+
+    }
+
+    pub fn change_profile_name_at_index(&mut self, index: i32, name: String) {
+        &self.profiles[index as usize].set_name(name);
     }
 }
