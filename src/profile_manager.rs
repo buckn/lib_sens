@@ -3,7 +3,6 @@ use crate::platform::Platform;
 use crate::profile::SensProfile;
 use crate::steam_folder::SteamFolders;
 use serde::{Deserialize, Serialize};
-use std::env;
 use std::fs;
 use std::fs::File;
 use std::io;

@@ -1,7 +1,7 @@
 ///A trait that describes how to implement support for a new game.
 mod game_trait;
 ///An enum that contains all the supported games, so that you can use match.
-mod games_enum;
+pub mod games_enum;
 ///A enum that represents the platform that the library is currently running on.
 mod platform;
 ///A module for each profile that represents the sensitivities for each game in that profile.
