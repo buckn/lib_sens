@@ -65,9 +65,9 @@ mod tests {
         x.add_profile();
         x.add_profile();
         x.set_platform();
-        x.change_profile_name_at_index(0, "my first profile".to_string());
-        x.change_profile_name_at_index(1, "the second profile i have created".to_string());
-        x.change_profile_name_at_index(2, "the last profile i will create".to_string());
+        x.change_name_at_index(0, "my first profile".to_string());
+        x.change_name_at_index(1, "the second profile i have created".to_string());
+        x.change_name_at_index(2, "the last profile i will create".to_string());
         x.add_steam_folder("/home/test/.steam/steam/".to_string());
         x.add_steam_folder("/home/test/.steam/steam/".to_string());
         x.add_steam_folder("/home/test/.steam/steam/".to_string());

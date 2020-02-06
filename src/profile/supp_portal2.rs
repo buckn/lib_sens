@@ -7,18 +7,31 @@ use std::fs::File;
 use std::io;
 use std::io::{Read, Write};
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct PORTAL2 {
     sens: f64,
     path: String,
 }
 
-impl Game for PORTAL2 {
-    fn new() -> Self {
+impl PORTAL2 {
+    pub fn new() -> Self {
         Self {
             sens: 1.0,
             path: "".to_string(),
         }
+    }
+    fn convert_to_csgo(value: f64) -> f64 {
+        value
+    }
+    fn convert_from_csgo(value: f64) -> f64 {
+        value
+    }
+}
+
+#[typetag::serde]
+impl Game for PORTAL2 {
+    fn to_string(&self) -> String {
+        "PORTAL2".to_owned() + ":    " + &self.sens.to_string() + "\n"
     }
     fn get_sens(&self) -> f64 {
         self.sens
@@ -28,11 +41,17 @@ impl Game for PORTAL2 {
             self.sens = value;
         }
     }
-    fn convert_to_csgo(value: f64) -> f64 {
-        value
+    fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error> {
+        self.set_sens(self.fs_read()?);
+        Ok(())
     }
-    fn convert_from_csgo(value: f64) -> f64 {
-        value
+    fn set_sens_from_csgo(&mut self, value: f64) {
+        if value > 0.0 {
+            self.sens = self.convert_self_to_csgo();
+        }
+    }
+    fn convert_self_to_csgo(&self) -> f64 {
+        self.sens
     }
     fn fs_read(&self) -> Result<f64, io::Error> {
         let mut return_val: f64 = 0.0;
@@ -60,7 +79,7 @@ impl Game for PORTAL2 {
         }
         Ok(return_val)
     }
-    fn fs_write(self) -> Result<(), io::Error> {
+    fn fs_write(&self) -> Result<(), io::Error> {
         let mut y = "".to_string();
 
         let mut file = File::open(self.path.clone())?;
@@ -87,7 +106,7 @@ impl Game for PORTAL2 {
             y += item;
         }
 
-        let mut file_write = File::create(self.path)?;
+        let mut file_write = File::create(self.path.clone())?;
         file_write.write(y.as_bytes())?;
         Ok(())
     }

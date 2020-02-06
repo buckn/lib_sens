@@ -7,18 +7,31 @@ use std::fs::File;
 use std::io;
 use std::io::{Read, Write};
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct CSGO {
     sens: f64,
     path: String,
 }
 
-impl Game for CSGO {
-    fn new() -> Self {
+impl CSGO {
+    pub fn new() -> Self {
         Self {
             sens: 1.0,
             path: "".to_string(),
         }
+    }
+    fn convert_to_csgo(value: f64) -> f64 {
+        value
+    }
+    fn convert_from_csgo(value: f64) -> f64 {
+        value
+    }
+}
+
+#[typetag::serde]
+impl Game for CSGO {
+    fn to_string(&self) -> String {
+        "CSGO".to_owned() + ":    " + &self.sens.to_string() + "\n"
     }
     fn get_sens(&self) -> f64 {
         self.sens
@@ -28,14 +41,20 @@ impl Game for CSGO {
             self.sens = value;
         }
     }
-    fn convert_to_csgo(value: f64) -> f64 {
-        value
+    fn set_sens_from_csgo(&mut self, value: f64) {
+        if value > 0.0 {
+            self.sens = self.convert_self_to_csgo();
+        }
     }
-    fn convert_from_csgo(value: f64) -> f64 {
-        value
+    fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error> {
+        self.set_sens(self.fs_read()?);
+        Ok(())
     }
+    fn convert_self_to_csgo(&self) -> f64 {
+        self.sens
+    }
+
     fn fs_read(&self) -> Result<f64, io::Error> {
-        println!("path {:?}", self.path);
         let mut return_val: f64 = 0.0;
         let mut file = File::open(&self.path)?;
         let mut contents = String::new();
@@ -61,7 +80,7 @@ impl Game for CSGO {
         }
         Ok(return_val)
     }
-    fn fs_write(self) -> Result<(), io::Error> {
+    fn fs_write(&self) -> Result<(), io::Error> {
         let mut y = "".to_string();
 
         let file = File::open(self.path.clone());
@@ -88,7 +107,7 @@ impl Game for CSGO {
             y += item;
         }
 
-        let mut file_write = File::create(self.path)?;
+        let mut file_write = File::create(self.path.clone())?;
         file_write.write(y.as_bytes())?;
         Ok(())
     }

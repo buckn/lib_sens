@@ -15,64 +15,46 @@ use crate::steam_folder::SteamFolders;
 use serde::{Deserialize, Serialize};
 use std::io;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct GamesTuple(CSGO, PORTAL2, TF2);
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize)]
 pub struct SensProfile {
-    game_structs_tuple: GamesTuple,
+    game_vec: Vec<Box<dyn Game>>,
     name: String,
 }
 
 impl SensProfile {
     pub fn new() -> Self {
         Self{
-            game_structs_tuple: GamesTuple(CSGO::new(), PORTAL2::new(), TF2::new()), 
+            game_vec: vec![Box::new(CSGO::new()), Box::new(PORTAL2::new()), Box::new(TF2::new())], 
             name: "untitled_profile".to_string(),
         }
     }
 
     pub fn equalize(&mut self, game: SupportedGames) {
-        let csgo_sens: f64;
-
-        match game {
-            SupportedGames::CSGO => csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.0.get_sens()),
-            SupportedGames::PORTAL2 => csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.1.get_sens()),
-            SupportedGames::TF2 => csgo_sens = CSGO::convert_to_csgo(self.game_structs_tuple.2.get_sens()),
+        let set_sens = self.game_vec[game as usize].convert_self_to_csgo();
+        for item in &mut self.game_vec {
+            item.set_sens_from_csgo(set_sens);
         }
-
-        self.game_structs_tuple.0.set_sens(CSGO::convert_from_csgo(csgo_sens));
-        self.game_structs_tuple.1.set_sens(PORTAL2::convert_from_csgo(csgo_sens));
-        self.game_structs_tuple.2.set_sens(TF2::convert_from_csgo(csgo_sens));
     }
 
     pub fn fs_read_all_game_sens(&mut self) -> Result<(), io::Error> {
-        self.game_structs_tuple.0.set_sens(self.game_structs_tuple.0.fs_read()?);
-        self.game_structs_tuple.1.set_sens(self.game_structs_tuple.1.fs_read()?);
-        self.game_structs_tuple.2.set_sens(self.game_structs_tuple.2.fs_read()?);
+        for item in &mut self.game_vec {
+            item.set_sens(item.fs_read()?);
+        }
         Ok(())
     }
 
     pub fn fs_read_game_sens(&mut self, game: SupportedGames) -> Result<(), io::Error> {
-        match game {
-            SupportedGames::CSGO => self.game_structs_tuple.0.set_sens(self.game_structs_tuple.0.fs_read()?),
-            SupportedGames::PORTAL2 => self.game_structs_tuple.1.set_sens(self.game_structs_tuple.1.fs_read()?),
-            SupportedGames::TF2 => self.game_structs_tuple.2.set_sens(self.game_structs_tuple.2.fs_read()?),
-        }
+        self.game_vec[game as usize].set_sens_to_fs_value()?;
         Ok(())
     }
 
     pub fn set_game_sens(&mut self, game: SupportedGames, sens: f64) {
-        match game {
-            SupportedGames::CSGO => self.game_structs_tuple.0.set_sens(sens),
-            SupportedGames::PORTAL2 => self.game_structs_tuple.1.set_sens(sens),
-            SupportedGames::TF2 => self.game_structs_tuple.2.set_sens(sens),
-        }
+        self.game_vec[game as usize].set_sens(sens);
     }
-    pub fn save_all_to_configs(self) -> Result<(), io::Error> {
-        self.game_structs_tuple.0.clone().fs_write()?;
-        self.game_structs_tuple.1.clone().fs_write()?;
-        self.game_structs_tuple.2.clone().fs_write()?;
+    pub fn save_all_to_configs(&self) -> Result<(), io::Error> {
+        for item in &self.game_vec {
+            item.fs_write()?;
+        }
         Ok(())
     }
     pub fn set_all_paths(
@@ -80,12 +62,9 @@ impl SensProfile {
         steam_paths: SteamFolders,
         platform_value: Platform,
     ) -> Result<(), io::Error> {
-        self.game_structs_tuple.0
-            .set_path(steam_paths.clone(), platform_value.clone())?;
-        self.game_structs_tuple.1
-            .set_path(steam_paths.clone(), platform_value.clone())?;
-        self.game_structs_tuple.2
-            .set_path(steam_paths.clone(), platform_value.clone())?;
+        for item in &mut self.game_vec {
+            item.set_path(steam_paths.clone(), platform_value.clone())?;
+        }
         Ok(())
     }
 
@@ -95,6 +74,14 @@ impl SensProfile {
 
     pub fn set_name(&mut self, name: String) {
         self.name = name;
+    }
+    pub fn to_string(&self) -> String {
+        let mut string: String = "Game Sensitivities: \n\n".to_string();
+        for item in &self.game_vec {
+            string = string + &item.to_string();
+        }
+        string
+
     }
 
 }
