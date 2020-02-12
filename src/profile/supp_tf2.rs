@@ -20,12 +20,6 @@ impl TF2 {
             path: "".to_string(),
         }
     }
-    fn convert_to_csgo(value: f64) -> f64 {
-        value
-    }
-    fn convert_from_csgo(value: f64) -> f64 {
-        value
-    }
 }
 
 #[typetag::serde]

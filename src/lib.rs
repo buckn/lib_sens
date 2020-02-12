@@ -18,7 +18,8 @@ mod tests {
 
     #[test]
     fn profiles_new() {
-        let x = Profiles::new();
+        let mut x = Profiles::new();
+        x.add_profile();
     }
     #[test]
     fn manipulate_profiles() {
@@ -75,5 +76,4 @@ mod tests {
         x.add_steam_folder("/home/test/.steam/steam/".to_string());
         println!("{}", x.to_string());
     }
-
 }

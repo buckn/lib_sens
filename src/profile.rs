@@ -23,8 +23,12 @@ pub struct SensProfile {
 
 impl SensProfile {
     pub fn new() -> Self {
-        Self{
-            game_vec: vec![Box::new(CSGO::new()), Box::new(PORTAL2::new()), Box::new(TF2::new())], 
+        Self {
+            game_vec: vec![
+                Box::new(CSGO::new()),
+                Box::new(PORTAL2::new()),
+                Box::new(TF2::new()),
+            ],
             name: "untitled_profile".to_string(),
         }
     }
@@ -81,7 +85,5 @@ impl SensProfile {
             string = string + &item.to_string();
         }
         string
-
     }
-
 }

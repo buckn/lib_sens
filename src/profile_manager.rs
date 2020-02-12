@@ -1,7 +1,6 @@
 use crate::games_enum::SupportedGames;
 use crate::platform::Platform;
 use crate::profile::SensProfile;
-use crate::platform;
 use crate::steam_folder::SteamFolders;
 use serde::{Deserialize, Serialize};
 use std::fs;
@@ -72,7 +71,8 @@ impl Profiles {
     }
     ///This removes a specific steam folder from the steam folders vector.
     pub fn remove_steam_folder_at_index(&mut self, index: i32) {
-        self.steam_paths.remove_steam_folder_at_index(index as usize)
+        self.steam_paths
+            .remove_steam_folder_at_index(index as usize)
     }
     ///This sets the paths of the individual game config files, for every game in every profile.
     ///It is important that the correct paths, using this function, are set before accessing the files, or accessing files will produce errors.
@@ -135,19 +135,28 @@ impl Profiles {
         let mut return_string: String = "Profiles: \n".to_string();
 
         for i in 0..self.profiles.len() {
-            return_string = return_string + "    " + &i.to_string() + ".  " + &self.profiles[i].get_name() + "\n";
+            return_string = return_string
+                + "    "
+                + &i.to_string()
+                + ".  "
+                + &self.profiles[i].get_name()
+                + "\n";
         }
 
         return_string = return_string + "Steam Folders: \n";
 
         for i in 0..self.steam_paths.len() {
-            return_string = return_string + "    " + &i.to_string() + ".  " + &self.steam_paths.get_steam_folder_at_pointer(i as usize) + "\n";
+            return_string = return_string
+                + "    "
+                + &i.to_string()
+                + ".  "
+                + &self.steam_paths.get_steam_folder_at_pointer(i as usize)
+                + "\n";
         }
 
         return_string
-
     }
-    
+
     pub fn append_steam_folder(&mut self, path: String) {
         self.steam_paths.add_steam_folder(path);
     }
