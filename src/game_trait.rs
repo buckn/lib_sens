@@ -8,7 +8,6 @@ pub trait Game {
     fn get_sens(&self) -> f64;
     fn set_sens(&mut self, value: f64);
     fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error>;
-    fn set_sens_from_csgo(&mut self, value: f64);
 
     //convert to and from csgo sens, the standard sens unit
     fn convert_self_to_csgo(&self) -> f64;

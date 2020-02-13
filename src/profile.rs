@@ -36,7 +36,7 @@ impl SensProfile {
     pub fn equalize(&mut self, game: SupportedGames) {
         let set_sens = self.game_vec[game as usize].convert_self_to_csgo();
         for item in &mut self.game_vec {
-            item.set_sens_from_csgo(set_sens);
+            item.set_sens(set_sens);
         }
     }
 

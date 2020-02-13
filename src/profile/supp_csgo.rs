@@ -35,11 +35,6 @@ impl Game for CSGO {
             self.sens = value;
         }
     }
-    fn set_sens_from_csgo(&mut self, value: f64) {
-        if value > 0.0 {
-            self.sens = self.convert_self_to_csgo();
-        }
-    }
     fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error> {
         self.set_sens(self.fs_read()?);
         Ok(())

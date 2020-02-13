@@ -39,11 +39,6 @@ impl Game for PORTAL2 {
         self.set_sens(self.fs_read()?);
         Ok(())
     }
-    fn set_sens_from_csgo(&mut self, value: f64) {
-        if value > 0.0 {
-            self.sens = self.convert_self_to_csgo();
-        }
-    }
     fn convert_self_to_csgo(&self) -> f64 {
         self.sens
     }
