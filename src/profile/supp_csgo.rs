@@ -39,6 +39,11 @@ impl Game for CSGO {
         self.set_sens(self.fs_read()?);
         Ok(())
     }
+    fn set_sens_from_csgo_sens(&mut self, value: f64) {
+        if value > 0.0 {
+            self.sens = value;
+        }
+    }
     fn convert_self_to_csgo(&self) -> f64 {
         self.sens
     }
@@ -101,12 +106,11 @@ impl Game for CSGO {
         Ok(())
     }
     fn get_path(&self) -> String {
-        let return_path = String::from(&self.path);
-        return_path
+        String::from(&self.path)
     }
     fn set_path(
         &mut self,
-        steam_paths: SteamFolders,
+        steam_paths: &SteamFolders,
         _platform_value: Platform,
     ) -> Result<(), io::Error> {
         self.path = steam_paths

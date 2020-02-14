@@ -4,10 +4,13 @@ mod supp_csgo;
 mod supp_portal2;
 ///This is an implementation of the Game trait for Team Fortress 2.
 mod supp_tf2;
+///This is an implementation of the Game trait for Dead Space.
+mod supp_ds;
 
 use crate::game_trait::Game;
 use crate::games_enum::SupportedGames;
 use crate::platform::*;
+use crate::profile::supp_ds::DS;
 use crate::profile::supp_csgo::CSGO;
 use crate::profile::supp_portal2::PORTAL2;
 use crate::profile::supp_tf2::TF2;
@@ -28,6 +31,7 @@ impl SensProfile {
                 Box::new(CSGO::new()),
                 Box::new(PORTAL2::new()),
                 Box::new(TF2::new()),
+                Box::new(DS::new()),
             ],
             name: "untitled_profile".to_string(),
         }
@@ -36,7 +40,7 @@ impl SensProfile {
     pub fn equalize(&mut self, game: SupportedGames) {
         let set_sens = self.game_vec[game as usize].convert_self_to_csgo();
         for item in &mut self.game_vec {
-            item.set_sens(set_sens);
+            item.set_sens_from_csgo_sens(set_sens);
         }
     }
 
@@ -63,11 +67,11 @@ impl SensProfile {
     }
     pub fn set_all_paths(
         &mut self,
-        steam_paths: SteamFolders,
+        steam_paths: &SteamFolders,
         platform_value: Platform,
     ) -> Result<(), io::Error> {
         for item in &mut self.game_vec {
-            item.set_path(steam_paths.clone(), platform_value.clone())?;
+            item.set_path(steam_paths, platform_value.clone())?;
         }
         Ok(())
     }

@@ -8,6 +8,7 @@ pub trait Game {
     fn get_sens(&self) -> f64;
     fn set_sens(&mut self, value: f64);
     fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error>;
+    fn set_sens_from_csgo_sens(&mut self, value: f64);
 
     //convert to and from csgo sens, the standard sens unit
     fn convert_self_to_csgo(&self) -> f64;
@@ -20,7 +21,7 @@ pub trait Game {
     fn get_path(&self) -> String;
     fn set_path(
         &mut self,
-        steam_path: SteamFolders,
+        steam_path: &SteamFolders,
         platform_value: Platform,
     ) -> Result<(), io::Error>;
 

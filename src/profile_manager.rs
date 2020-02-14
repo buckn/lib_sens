@@ -78,7 +78,7 @@ impl Profiles {
     ///It is important that the correct paths, using this function, are set before accessing the files, or accessing files will produce errors.
     pub fn set_paths(&mut self) -> Result<(), io::Error> {
         for profile in self.profiles.iter_mut() {
-            profile.set_all_paths(self.steam_paths.clone(), self.platform.clone())?;
+            profile.set_all_paths(&self.steam_paths, self.platform.clone())?;
         }
         Ok(())
     }

@@ -27,7 +27,7 @@ impl SteamFolders {
         self.steam_folder_paths.len()
     }
     pub fn find_file_in_steam_paths_with_id(
-        self,
+        &self,
         config_path: String,
     ) -> Result<String, io::Error> {
         let mut vec_index: i32 = 0;
@@ -48,5 +48,15 @@ impl SteamFolders {
         }
 
         Ok(file_string)
+    }
+
+    pub fn find_file_in_steam_paths(&self, config_path: String) -> Result<String, io::Error> {
+        let mut return_path = "".to_string();
+        for path in self.steam_folder_paths.clone() {
+            if Path::new(&(path.clone() + &config_path)).exists() {
+                return_path =  (path + &config_path).to_string();
+            }
+        }
+        Ok(return_path)
     }
 }
