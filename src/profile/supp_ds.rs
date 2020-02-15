@@ -15,6 +15,8 @@ pub struct DS {
 }
 
 impl DS {
+    const CONVERSION_FACTOR: f64 = 0.1706;
+
     pub fn new() -> Self {
         Self {
             sens: 1.0,
@@ -42,11 +44,11 @@ impl Game for DS {
     }
     fn set_sens_from_csgo_sens(&mut self, value: f64) {
         if value > 0.0 {
-            self.sens = value * 0.1706;
+            self.sens = value * DS::CONVERSION_FACTOR;
         }
     }
     fn convert_self_to_csgo(&self) -> f64 {
-        self.sens / 0.1706
+        self.sens / DS::CONVERSION_FACTOR
     }
 
     fn fs_read(&self) -> Result<f64, io::Error> {
