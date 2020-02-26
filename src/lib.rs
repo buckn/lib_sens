@@ -74,6 +74,9 @@ mod tests {
         x.add_steam_folder("/home/test/.steam/steam/".to_string());
         x.add_steam_folder("/home/test/.steam/steam/".to_string());
         x.add_steam_folder("/home/test/.steam/steam/".to_string());
-        println!("{}", x.to_string());
+        println!("Profiles:\n");
+        println!("{}", x.to_string(false));
+        println!("Steam Folders:\n");
+        println!("{}", x.to_string(true));
     }
 }
