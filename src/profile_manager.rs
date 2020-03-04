@@ -137,14 +137,12 @@ impl Profiles {
         if steam {
             for i in 0..self.steam_paths.len() {
                 return_string = return_string
-                + "    "
                 + &self.steam_paths.get_steam_folder_at_pointer(i as usize)
                 + "\n";
             } 
         } else {
             for i in 0..self.profiles.len() {
                 return_string = return_string
-                + "    "
                 + &self.profiles[i].get_name()
                 + "\n";
             }
