@@ -160,4 +160,12 @@ impl Profiles {
     pub fn change_name_at_index(&mut self, index: i32, name: String) {
         self.profiles[index as usize].set_name(name);
     }
+    pub fn verify_existence() -> Result<(), io::Error> {
+        let homepath: String = dirs::config_dir().unwrap().to_str().unwrap().to_string();
+
+        if !(Path::new(&(homepath.clone() + "/sens/profiles.json")).exists()) {
+            Profiles::new().save_json()?;
+        }
+        Ok(())
+    }
 }
