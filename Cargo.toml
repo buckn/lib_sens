@@ -1,6 +1,6 @@
 [package]
 name = "lib_sens"
-version = "0.1.3"
+version = "0.1.4"
 authors = ["buckn <nathanieljbuck7@gmail.com>"]
 edition = "2018"
 description = "A Rust crate that converts sensitivities between video games and synchronizes them to configuration files."
