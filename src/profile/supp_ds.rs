@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io;
-use std::io::{Read};
+use std::io::Read;
 use std::io::{prelude::*, BufReader};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -60,15 +60,15 @@ impl Game for DS {
         let key_to_find = "sensitivity";
 
         let mut values = contents
-        .lines()
-        .filter_map(|l| {
-            if let [key, value] = l.split_whitespace().collect::<Vec<_>>()[..] {
-                Some((key, value[1..value.len() - 1].parse::<String>().unwrap()))
-            } else {
-                None
-            }
-        })
-        .collect::<HashMap<_, _>>();
+            .lines()
+            .filter_map(|l| {
+                if let [key, value] = l.split_whitespace().collect::<Vec<_>>()[..] {
+                    Some((key, value[1..value.len() - 1].parse::<String>().unwrap()))
+                } else {
+                    None
+                }
+            })
+            .collect::<HashMap<_, _>>();
 
         for (key, value) in values.iter_mut() {
             if key != &"" && key_to_find.contains(key) {
@@ -85,8 +85,13 @@ impl Game for DS {
 
         for line in reader.lines() {
             current_line = line.unwrap();
-            if current_line.clone().starts_with("Control.MouseSensitivity = ") {
-                write_string += &(("Control.MouseSensitivity = ".to_owned() + &self.sens.to_string()) + &"\n".to_string());
+            if current_line
+                .clone()
+                .starts_with("Control.MouseSensitivity = ")
+            {
+                write_string += &(("Control.MouseSensitivity = ".to_owned()
+                    + &self.sens.to_string())
+                    + &"\n".to_string());
             } else {
                 write_string += &(current_line + &"\n".to_string());
             }
@@ -103,7 +108,7 @@ impl Game for DS {
         &mut self,
         steam_paths: &SteamFolders,
         _platform_value: Platform,
-        ) -> Result<(), io::Error> {
+    ) -> Result<(), io::Error> {
         self.path = steam_paths
         .find_file_in_steam_paths("steamapps/compatdata/17470/pfx/drive_c/users/steamuser/Local Settings/Application Data/Electronic Arts/Dead Space/settings.txt".to_string())?;
         Ok(())

@@ -33,7 +33,7 @@ impl Profiles {
         game: SupportedGames,
         sens: f64,
         profile_index: i32,
-        ) {
+    ) {
         self.profiles[profile_index as usize].set_game_sens(game, sens);
     }
     ///This takes a profile at a specific index and converts the sensitivities so that they are all equivalent to one game.
@@ -72,7 +72,7 @@ impl Profiles {
     ///This removes a specific steam folder from the steam folders vector.
     pub fn remove_steam_folder_at_index(&mut self, index: i32) {
         self.steam_paths
-        .remove_steam_folder_at_index(index as usize)
+            .remove_steam_folder_at_index(index as usize)
     }
     ///This sets the paths of the individual game config files, for every game in every profile.
     ///It is important that the correct paths, using this function, are set before accessing the files, or accessing files will produce errors.
@@ -87,7 +87,7 @@ impl Profiles {
         &mut self,
         game: SupportedGames,
         index: i32,
-        ) -> Result<(), io::Error> {
+    ) -> Result<(), io::Error> {
         self.profiles[index as usize].fs_read_game_sens(game)?;
         Ok(())
     }
@@ -112,7 +112,7 @@ impl Profiles {
             fs::remove_file(homepath.clone() + "/sens/profiles.json")?;
         }
         File::create(homepath + "/sens/profiles.json")?
-        .write(serde_json::to_string(&self).unwrap().as_bytes())?;
+            .write(serde_json::to_string(&self).unwrap().as_bytes())?;
         Ok(())
     }
     ///This retrieves the sensitivity profiles from storage so that they can be used
@@ -137,29 +137,30 @@ impl Profiles {
         if steam {
             for i in 0..self.steam_paths.len() {
                 return_string = return_string
-                + &self.steam_paths.get_steam_folder_at_pointer(i as usize)
-                + "\n";
-            } 
+                    + &self.steam_paths.get_steam_folder_at_pointer(i as usize)
+                    + "\n";
+            }
         } else {
             for i in 0..self.profiles.len() {
-                return_string = return_string
-                + &self.profiles[i].get_name()
-                + "\n";
+                return_string = return_string + &self.profiles[i].get_name() + "\n";
             }
         }
 
         return_string
     }
-
+    ///This adds a steam folder with a specific path to the struct
     pub fn append_steam_folder(&mut self, path: String) {
         self.steam_paths.add_steam_folder(path);
     }
+    //This to_string's an entire profile
     pub fn show_profile(&self, index: i32) -> String {
         self.profiles[index as usize].to_string()
     }
+    //This changes the name of a profile at a specifc index
     pub fn change_name_at_index(&mut self, index: i32, name: String) {
         self.profiles[index as usize].set_name(name);
     }
+    //This verifies that the profiles.json(where the profile object is permenantly stored) file exists
     pub fn verify_existence() -> Result<(), io::Error> {
         let homepath: String = dirs::config_dir().unwrap().to_str().unwrap().to_string();
 

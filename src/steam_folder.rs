@@ -54,7 +54,7 @@ impl SteamFolders {
         let mut return_path = "".to_string();
         for path in self.steam_folder_paths.clone() {
             if Path::new(&(path.clone() + &config_path)).exists() {
-                return_path =  (path + &config_path).to_string();
+                return_path = (path + &config_path).to_string();
             }
         }
         Ok(return_path)
