@@ -29,17 +29,10 @@ impl Game for TF2 {
     fn to_string(&self) -> String {
         "TF2".to_owned() + ":    " + &self.sens.to_string() + "\n"
     }
-    fn get_sens(&self) -> f64 {
-        self.sens
-    }
     fn set_sens(&mut self, value: f64) {
         if value > 0.0 {
             self.sens = value;
         }
-    }
-    fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error> {
-        self.set_sens(self.fs_read()?);
-        Ok(())
     }
     fn set_sens_from_csgo_sens(&mut self, value: f64) {
         if value > 0.0 {
@@ -105,9 +98,6 @@ impl Game for TF2 {
         let mut file_write = File::create(self.path.clone())?;
         file_write.write(y.as_bytes())?;
         Ok(())
-    }
-    fn get_path(&self) -> String {
-        String::from(&self.path)
     }
     fn set_path(
         &mut self,

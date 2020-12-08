@@ -5,9 +5,11 @@ use std::io;
 #[typetag::serde(tag = "type")]
 pub trait Game {
     //set sens within the object
-    fn get_sens(&self) -> f64;
     fn set_sens(&mut self, value: f64);
-    fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error>;
+    fn set_sens_to_fs_value(&mut self) -> Result<(), io::Error> {
+        self.set_sens(self.fs_read()?);
+        Ok(())
+    }
     fn set_sens_from_csgo_sens(&mut self, value: f64);
 
     //convert to and from csgo sens, the standard sens unit
@@ -18,7 +20,6 @@ pub trait Game {
     fn fs_write(&self) -> Result<(), io::Error>;
 
     //deal with the file path of the game config file
-    fn get_path(&self) -> String;
     fn set_path(
         &mut self,
         steam_path: &SteamFolders,

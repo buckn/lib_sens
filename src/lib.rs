@@ -11,6 +11,9 @@ pub mod profile_manager;
 //A profile that stores the paths to various steam folders on the current system.
 mod steam_folder;
 
+pub use crate::games_enum::SupportedGames;
+pub use crate::profile_manager::Profiles;
+
 #[cfg(test)]
 mod tests {
     use crate::games_enum::SupportedGames;
